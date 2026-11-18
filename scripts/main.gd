@@ -32,6 +32,10 @@ func _ready() -> void:
 		get_viewport().msaa_3d = Viewport.MSAA_4X
 	if Game.has_arg("--autotest"):
 		_autotest()
+	elif Game.has_arg("--swatch"):
+		_swatch()
+	elif Game.has_arg("--playtest"):
+		_playtest(int(Game.arg_value("--playtest", "4")) - 1)
 	elif Game.has_arg("--level"):
 		start_level(int(Game.arg_value("--level", "1")) - 1)
 	else:
@@ -44,7 +48,7 @@ func _setup_world() -> void:
 	env.background_color = Color(0, 0, 0)
 	env.ambient_light_source = Environment.AMBIENT_SOURCE_COLOR
 	env.ambient_light_color = Color(0.62, 0.6, 0.78)
-	env.ambient_light_energy = 0.55
+	env.ambient_light_energy = 0.38
 	env.tonemap_mode = Environment.TONE_MAPPER_LINEAR
 	env.glow_enabled = true
 	env.glow_intensity = 0.55
@@ -57,16 +61,16 @@ func _setup_world() -> void:
 	add_child(we)
 	var key := DirectionalLight3D.new()
 	key.rotation_degrees = Vector3(-52, -32, 0)
-	key.light_energy = 1.05
+	key.light_energy = 0.78
 	add_child(key)
 	var rim := DirectionalLight3D.new()
 	rim.rotation_degrees = Vector3(-18, 150, 0)
-	rim.light_energy = 0.7
+	rim.light_energy = 0.5
 	rim.light_color = Color(0.75, 0.82, 1.0)
 	add_child(rim)
 	var fill := DirectionalLight3D.new()
 	fill.rotation_degrees = Vector3(-30, 40, 0)
-	fill.light_energy = 0.35
+	fill.light_energy = 0.22
 	fill.light_color = Color(1.0, 0.85, 0.9)
 	add_child(fill)
 	cam = Camera3D.new()
@@ -488,7 +492,7 @@ func _on_peg_completed(peg: int) -> void:
 		return
 	show_toast(Game.t("pyramid"), 1.2)
 	if toast:
-		toast.add_theme_color_override("font_color", Game.COLORS[board.puzzle.pegs[peg][0] / 10].lightened(0.3))
+		toast.add_theme_color_override("font_color", board.color_of(board.puzzle.pegs[peg][0] / 10).lightened(0.3))
 		get_tree().create_timer(1.6).timeout.connect(func():
 			if is_instance_valid(toast):
 				toast.add_theme_color_override("font_color", Color.WHITE))
@@ -849,3 +853,65 @@ func _solve_by_taps(mid_shot := false) -> void:
 		k += 1
 		if won:
 			break
+
+
+## Plays a level like a person: taps the top ring of the source stack and the top of the
+## destination stack (not the peg centre), screenshots every step, logs what was picked.
+func _playtest(idx: int) -> void:
+	await _wait(0.3)
+	start_level(idx)
+	await _wait(1.8)
+	await _shot("pt_%02d_00" % (idx + 1))
+	var step := 0
+	for m in solution:
+		step += 1
+		await _wait_idle()
+		var src := _human_point(m.x)
+		var got := board.pick(src)
+		press_at(src)
+		await _wait(0.3)
+		await _shot("pt_%02d_%02da" % [idx + 1, step])
+		var dst := _human_point(m.y)
+		var got2 := board.pick(dst)
+		press_at(dst)
+		await _wait(0.12)
+		await _wait_idle()
+		await _wait(0.5)
+		await _shot("pt_%02d_%02db" % [idx + 1, step])
+		_alog("step %d move %d->%d picked %d->%d hist=%d sel=%d" % [step, m.x, m.y, got, got2, history.size(), board.selected])
+	await _wait(3.0)
+	await _shot("pt_%02d_end" % (idx + 1))
+	# fast player: tap source+destination of the next move while the previous ring still flies
+	start_level(idx)
+	await _wait(1.8)
+	var k := 0
+	for m in solution:
+		press_at(_human_point(m.x))
+		await _wait(0.25)
+		press_at(_human_point(m.y))
+		await _wait(0.25)
+		k += 1
+	await _wait(2.0)
+	_alog("fast taps: history=%d of %d won=%s" % [history.size(), solution.size(), str(won)])
+	_alog("won=%s moves=%d" % [str(won), history.size()])
+	get_tree().quit()
+
+
+func _human_point(i: int) -> Vector2:
+	if board.rings[i].is_empty():
+		return cam.unproject_position(board.positions[i] + Vector3(0, Board.BASE_TOP, 0))
+	var j: int = board.puzzle.pegs[i].size() - 1
+	var code: int = board.puzzle.pegs[i][j]
+	return cam.unproject_position(board.rest_pos(i, j) + Vector3(0, Board.ring_h(code % 10) * 0.5, 0))
+
+
+## Debug: every colour as a 3-ring pyramid, for checking the palette.
+func _swatch() -> void:
+	await _wait(0.3)
+	state = "play"
+	level = {"par": 0, "id": 0, "colors": 7, "sizes": 3, "solution": []}
+	board.build(Puzzle.showcase(7, 3), false)
+	_fit_for_state()
+	await _wait(0.6)
+	await _shot("swatch_" + Game.arg_value("--swatch", "x"))
+	get_tree().quit()

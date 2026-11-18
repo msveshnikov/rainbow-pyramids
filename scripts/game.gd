@@ -2,14 +2,26 @@ extends Node
 ## Global state: level list, save data, settings, UI strings.
 
 const COLORS := [
-	Color("ff2a1c"),  # red
-	Color("ff7d12"),  # orange
-	Color("ffc41c"),  # yellow
+	Color("f2141b"),  # red
+	Color("ff6000"),  # orange
+	Color("ffd91a"),  # yellow
 	Color("8cf01e"),  # green
 	Color("1cb6ff"),  # cyan
 	Color("3a2cff"),  # blue
 	Color("b235ff"),  # violet
 ]
+
+## Which palette colours a level with n colours uses: few colours -> far apart hues,
+## so e.g. orange and yellow only meet on boards that need six or seven colours.
+const PALETTE_FOR := {
+	1: [0],
+	2: [0, 5],
+	3: [0, 2, 5],
+	4: [0, 2, 3, 5],
+	5: [0, 2, 3, 4, 6],
+	6: [0, 1, 2, 3, 5, 6],
+	7: [0, 1, 2, 3, 4, 5, 6],
+}
 
 const SAVE_PATH := "user://save.json"
 
@@ -65,6 +77,10 @@ func _ready() -> void:
 	_load_save()
 	if save.lang == "":
 		save.lang = "ru" if OS.get_locale_language() == "ru" else "en"
+
+
+func palette_for(n: int) -> Array:
+	return PALETTE_FOR.get(clampi(n, 1, 7), PALETTE_FOR[7])
 
 
 func t(key: String) -> String:

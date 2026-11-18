@@ -26,6 +26,7 @@ var positions: Array = []   # Vector3 per peg
 var completed := {}
 var selected := -1
 var busy := false
+var pending_taps: Array = []   # taps made while a ring was flying (max 2), replayed on landing
 var bob_ready := false
 var stick_h := 1.5
 var lift_y := 2.0
@@ -33,6 +34,7 @@ var base_r := 0.9
 var showcase := false
 var time := 0.0
 var hint_pegs: Array = []
+var color_map: Array = [0, 1, 2, 3, 4, 5, 6]   # puzzle colour -> Game.COLORS index
 var hint_time := 0.0
 var _mesh_cache := {}
 var _dot_mat: StandardMaterial3D
@@ -49,6 +51,10 @@ static func tube(s: int) -> float:
 
 static func ring_h(s: int) -> float:
 	return 2.0 * tube(s) * FLAT
+
+
+func color_of(c: int) -> Color:
+	return Game.COLORS[color_map[c] if c < color_map.size() else c % Game.COLORS.size()]
 
 
 func _ready() -> void:
@@ -84,6 +90,7 @@ func clear() -> void:
 	hint_pegs.clear()
 	selected = -1
 	busy = false
+	pending_taps.clear()
 	bob_ready = false
 
 
@@ -91,6 +98,7 @@ func build(p: Puzzle, animate := true) -> void:
 	clear()
 	showcase = false
 	puzzle = p
+	color_map = Game.palette_for(p.colors)
 	var smax := p.sizes
 	base_r = r_out(smax) + 0.1
 	stick_h = p.cap * ring_h(smax) * STACK + 0.32
@@ -178,7 +186,7 @@ func make_ring(code: int) -> Node3D:
 	var mi := MeshInstance3D.new()
 	mi.mesh = _ring_mesh(s)
 	mi.scale = Vector3(1, FLAT, 1)
-	var col: Color = Game.COLORS[c]
+	var col: Color = color_of(c)
 	var m := ShaderMaterial.new()
 	m.shader = RING_SHADER
 	m.set_shader_parameter("base_color", col)
@@ -293,7 +301,13 @@ func peg_screen_pos(i: int) -> Vector2:
 # ---------------------------------------------------------------- player actions
 
 func tap(i: int) -> void:
-	if busy or showcase or puzzle == null:
+	if Game.has_arg("--taplog"):
+		print("TAP %d busy=%s sel=%d q=%s" % [i, str(busy), selected, str(pending_taps)])
+	if showcase or puzzle == null:
+		return
+	if busy:
+		if pending_taps.size() < 2:
+			pending_taps.append(i)
 		return
 	if selected == -1:
 		if puzzle.pegs[i].is_empty():
@@ -400,6 +414,11 @@ func _arc_step(t: float, ring: Node3D, p0: Vector3, p1: Vector3, h: float, tilt:
 	ring.rotation = Vector3(0, 0, sin(t * PI) * tilt)
 
 
+func _flush_pending() -> void:
+	while not pending_taps.is_empty() and not busy:
+		tap(pending_taps.pop_front())
+
+
 func _on_landed(b: int, ring: Node3D) -> void:
 	busy = false
 	ring.rotation = Vector3.ZERO
@@ -420,7 +439,7 @@ func _on_landed(b: int, ring: Node3D) -> void:
 		t2.tween_interval(d)
 		t2.tween_property(below, "scale", Vector3(1 + amt, 1 - amt * 1.5, 1 + amt), 0.05)
 		t2.tween_property(below, "scale", Vector3.ONE, 0.3).set_trans(Tween.TRANS_ELASTIC).set_ease(Tween.EASE_OUT)
-	burst(ring.position + Vector3(0, -ring_h(s) * 0.3, 0), Game.COLORS[c], 14, 2.2, 0.06)
+	burst(ring.position + Vector3(0, -ring_h(s) * 0.3, 0), color_of(c), 14, 2.2, 0.06)
 	landed.emit(b)
 	if puzzle.peg_complete(b) and not completed.has(b):
 		completed[b] = true
@@ -432,6 +451,10 @@ func _on_landed(b: int, ring: Node3D) -> void:
 			t3.tween_callback(celebrate_win)
 			t3.tween_interval(0.4)
 			t3.tween_callback(func(): won.emit())
+	if puzzle.is_won():
+		pending_taps.clear()
+	else:
+		_flush_pending.call_deferred()
 
 
 func show_hint(a: int, b: int) -> void:
@@ -461,7 +484,7 @@ func _refresh_rim(i: int) -> void:
 	if i == selected:
 		_set_rim(i, Color(1, 1, 1))
 	elif completed.has(i):
-		_set_rim(i, Game.COLORS[puzzle.pegs[i][0] / 10])
+		_set_rim(i, color_of(puzzle.pegs[i][0] / 10))
 	else:
 		_set_rim(i, Color(0.3, 0.32, 0.48))
 
@@ -474,7 +497,7 @@ func _flash_rim(i: int, c: Color) -> void:
 
 
 func _style_complete(i: int, anim := true) -> void:
-	var col: Color = Game.COLORS[puzzle.pegs[i][0] / 10]
+	var col: Color = color_of(puzzle.pegs[i][0] / 10)
 	var tm: StandardMaterial3D = pegs[i].tip_mat
 	tm.albedo_color = Color(1, 0.85, 0.3)
 	tm.emission = Color(1.0, 0.75, 0.2) * 1.6
@@ -503,7 +526,7 @@ func _style_normal(i: int) -> void:
 func celebrate_peg(i: int) -> void:
 	_style_complete(i)
 	var arr: Array = rings[i]
-	var col: Color = Game.COLORS[puzzle.pegs[i][0] / 10]
+	var col: Color = color_of(puzzle.pegs[i][0] / 10)
 	for j in arr.size():
 		var r: Node3D = arr[j]
 		var y0 := rest_pos(i, j).y
@@ -659,7 +682,9 @@ func intro() -> void:
 			longest = maxf(longest, d + 0.55)
 	var tw2 := create_tween()
 	tw2.tween_interval(minf(longest, 1.2))
-	tw2.tween_callback(func(): busy = false)
+	tw2.tween_callback(func():
+		busy = false
+		_flush_pending())
 
 
 # ---------------------------------------------------------------- title showcase
@@ -667,6 +692,7 @@ func intro() -> void:
 func build_showcase() -> void:
 	clear()
 	showcase = true
+	color_map = [0, 1, 2, 3, 4, 5, 6]
 	puzzle = Puzzle.showcase(7, 7)
 	var p := Puzzle.new()
 	p.colors = 1
@@ -732,7 +758,7 @@ func showcase_poke(screen: Vector2) -> bool:
 	if best and bd < 90.0:
 		var s: int = best.get_meta("code") % 10
 		Sfx.play("pop", 1.5 - s * 0.08)
-		burst(best.global_position, Game.COLORS[best.get_meta("code") / 10], 12, 2.0, 0.05)
+		burst(best.global_position, color_of(best.get_meta("code") / 10), 12, 2.0, 0.05)
 		best.set_meta("hop", 1.0)
 		return true
 	return false
