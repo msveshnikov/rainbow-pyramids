@@ -185,25 +185,31 @@ func show_title() -> void:
 	board.build_showcase()
 	_fit_for_state()
 	var s := _new_screen()
-	# rainbow title, letters bob in a wave
-	var vb := VBoxContainer.new()
-	vb.add_theme_constant_override("separation", -10)
-	vb.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	for w in [Game.t("title1"), Game.t("title2")]:
-		var hb := HBoxContainer.new()
-		hb.alignment = BoxContainer.ALIGNMENT_CENTER
-		hb.add_theme_constant_override("separation", 0)
-		hb.mouse_filter = Control.MOUSE_FILTER_IGNORE
-		var k := 0
-		for ch in w:
-			var l := UiKit.label(ch, 84 if w.length() <= 9 else 76, UiKit.rainbow(k), 16)
-			hb.add_child(l)
-			l.set_meta("wave", k + (0 if w == Game.t("title1") else 3))
-			k += 1
-		vb.add_child(hb)
-	s.add_child(vb)
-	_place(vb, Control.PRESET_CENTER_TOP, 60)
-	vb.set_meta("title", true)
+	# the logo my daughter painted ("Rainbow pyramids"), floating gently; tap it for a jiggle
+	var vs := get_viewport().get_visible_rect().size
+	var tex: Texture2D = load("res://assets/ui/logo.png")
+	var aspect := float(tex.get_width()) / tex.get_height()
+	var lw := minf(vs.x * 0.88, vs.y * 0.235 * aspect)
+	var head := VBoxContainer.new()
+	head.add_theme_constant_override("separation", -6)
+	head.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	var logo := TextureRect.new()
+	logo.texture = tex
+	logo.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+	logo.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+	logo.custom_minimum_size = Vector2(lw, lw / aspect)
+	logo.mouse_filter = Control.MOUSE_FILTER_STOP
+	logo.set_meta("logo", true)
+	logo.gui_input.connect(func(e: InputEvent):
+		if e is InputEventMouseButton and e.pressed:
+			Sfx.play("pop", randf_range(0.9, 1.3))
+			logo.set_meta("jiggle", 1.0))
+	head.add_child(logo)
+	if Game.save.lang == "ru":
+		head.add_child(UiKit.label(Game.t("title1") + " " + Game.t("title2"), 34, Color(1, 1, 1, 0.85), 8))
+	s.add_child(head)
+	_place(head, Control.PRESET_CENTER_TOP, int(vs.y * 0.025))
+	UiKit.pop_in(logo, 0.1, 0.7)
 	# buttons
 	var bx := VBoxContainer.new()
 	bx.add_theme_constant_override("separation", 22)
@@ -661,7 +667,18 @@ func _process(_delta: float) -> void:
 
 func _wave(n: Node, tt: float) -> void:
 	for c in n.get_children():
-		if c is Label and c.has_meta("wave"):
+		if c is TextureRect and c.has_meta("logo"):
+			var j: float = c.get_meta("jiggle", 0.0)
+			if j > 0.0:
+				j = maxf(0.0, j - get_process_delta_time() * 1.6)
+				c.set_meta("jiggle", j)
+			c.pivot_offset = c.size * 0.5
+			c.rotation = sin(tt * 1.3) * 0.025 + sin(tt * 24.0) * 0.08 * j
+			if c.get_meta("popped", false):
+				c.scale = Vector2.ONE * (1.0 + 0.025 * sin(tt * 2.1) + 0.12 * j)
+			elif c.scale.x >= 0.999:
+				c.set_meta("popped", true)
+		elif c is Label and c.has_meta("wave"):
 			var k: int = c.get_meta("wave")
 			c.pivot_offset = c.size * 0.5
 			c.rotation = sin(tt * 2.2 + k * 0.6) * 0.06

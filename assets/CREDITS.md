@@ -11,5 +11,7 @@ All third-party sound effects are CC0 (public domain). Thank you!
 
 Music (`music.mp3`, "Rainbow Pyramids") was generated for this game with [Suno](https://suno.com/song/255e43b7-6bfd-433b-97fb-1aacf0fa1d14) on the owner's free plan (non-commercial use).
 
+The "Rainbow pyramids" logo (`assets/ui/logo.png`, original in `concept/logo_by_daughter.jpg`) was painted by the owner's daughter.
+
 Ring and pyramid concept art (`concept/`, `assets/ui/title.png`) was supplied by the project owner.
 Everything 3D is built procedurally in code at runtime.

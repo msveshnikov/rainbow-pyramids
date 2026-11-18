@@ -1,6 +1,8 @@
 <div align="center">
 
-# 🌈 Rainbow Pyramids · Радужные пирамидки
+<img src="assets/ui/logo.png" alt="Rainbow pyramids — logo painted by my daughter" width="520">
+
+# Rainbow Pyramids · Радужные пирамидки
 
 **A glossy 3D ring-sorting puzzle made in Godot 4. Play in the browser, on Android or on Windows.**
 
@@ -55,4 +57,4 @@ godot --path . -- --autotest      # self-test, screenshots in renders/game/
   pegs, picking, every animation and particle effect.
 - `scripts/main.gd` — flow, camera framing for any screen shape, UI built in code, the autotest.
 - `tools/gen_levels.py` — makes `assets/levels/levels.json`: random deals, solver-checked, par = shortest solution.
-- Concept art in `concept/` was supplied by the project owner; music made with Suno, sounds are CC0, see [assets/CREDITS.md](assets/CREDITS.md).
+- The logo was painted by my daughter; concept art in `concept/` was supplied by the project owner; music made with Suno, sounds are CC0, see [assets/CREDITS.md](assets/CREDITS.md).

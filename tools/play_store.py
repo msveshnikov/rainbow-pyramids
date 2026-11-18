@@ -64,19 +64,19 @@ def feature(lang):
     ImageDraw.Draw(mask).ellipse((-60, -40, art.size[0] + 60, art.size[1] + 40), fill=255)
     mask = mask.filter(ImageFilter.GaussianBlur(30))
     bg.paste(art, (20, 24), mask)
+    # the logo painted by the owner's daughter
+    logo = Image.open(os.path.join(ROOT, "assets", "ui", "logo.png")).convert("RGBA")
+    lw = 540
+    logo = logo.resize((lw, round(logo.height * lw / logo.width)), Image.LANCZOS)
+    bg = bg.convert("RGBA")
+    bg.alpha_composite(logo, (452, 30))
+    bg = bg.convert("RGB")
     d = ImageDraw.Draw(bg)
-    if lang == "ru":
-        rainbow_text(d, (440, 110), "Радужные", 76)
-        rainbow_text(d, (440, 200), "пирамидки", 76)
-        sub = "Головоломка-сортировка колец"
-    else:
-        rainbow_text(d, (450, 110), "Rainbow", 84)
-        rainbow_text(d, (450, 205), "Pyramids", 84)
-        sub = "A glossy ring-sorting puzzle"
+    sub = "Головоломка-сортировка колец" if lang == "ru" else "A glossy ring-sorting puzzle"
     f = ImageFont.truetype(FONT, 30)
-    d.text((446, 320), sub, font=f, fill=(235, 235, 255), stroke_width=3, stroke_fill=(10, 5, 20))
+    d.text((470, 330), sub, font=f, fill=(235, 235, 255), stroke_width=3, stroke_fill=(10, 5, 20))
     f2 = ImageFont.truetype(FONT, 24)
-    d.text((446, 372), "50 уровней · без рекламы" if lang == "ru" else "50 levels · no ads",
+    d.text((470, 380), "50 уровней · без рекламы" if lang == "ru" else "50 levels · no ads",
            font=f2, fill=(255, 210, 80), stroke_width=3, stroke_fill=(10, 5, 20))
     name = "feature_1024x500.png" if lang == "ru" else "feature_en_1024x500.png"
     bg.save(os.path.join(OUT, name))
