@@ -228,9 +228,10 @@ func show_title() -> void:
 	var row := HBoxContainer.new()
 	row.alignment = BoxContainer.ALIGNMENT_CENTER
 	row.add_theme_constant_override("separation", 26)
-	row.add_child(_sound_button(Color("b235ff")))
+	row.add_child(_sound_button(Color("ff35d2")))
 	row.add_child(_music_button(Color("ff7d12")))
-	var lang := UiKit.button(Game.save.lang.to_upper(), Color("ffc41c"), Vector2(96, 96), 36)
+	var lang := UiKit.IconButton.new("lang", Color("ffc41c"), 96)
+	lang.caption = Game.save.lang.to_upper()
 	lang.pressed.connect(func():
 		Game.save.lang = "en" if Game.save.lang == "ru" else "ru"
 		Game.write_save()
@@ -412,7 +413,7 @@ func _build_hud() -> void:
 	bottom.add_child(btn_undo)
 	bottom.add_child(restart)
 	bottom.add_child(btn_hint)
-	bottom.add_child(_sound_button(Color("b235ff")))
+	bottom.add_child(_sound_button(Color("ff35d2")))
 	s.add_child(bottom)
 	_place(bottom, Control.PRESET_CENTER_BOTTOM, 40)
 	toast = UiKit.label("", 30, Color.WHITE, 10)
@@ -620,7 +621,11 @@ func _show_win(moves: int, stars: int, prev_best: int, new_best: bool) -> void:
 	srow.add_theme_constant_override("separation", 10)
 	var star_nodes: Array = []
 	for s in 3:
-		var st := UiKit.Star.new(116 if s == 1 else 96, s < stars)
+		var st := UiKit.Star.new(124 if s == 1 else 100, s < stars)
+		if s != 1:
+			# side stars sit lower and lean outwards, like the drawing
+			st.size_flags_vertical = Control.SIZE_SHRINK_END
+			st.rotation = -0.2 if s == 0 else 0.2
 		srow.add_child(st)
 		star_nodes.append(st)
 		st.modulate.a = 0.0

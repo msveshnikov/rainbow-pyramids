@@ -85,10 +85,21 @@ static func rainbow(i: int) -> Color:
 
 # ------------------------------------------------------------- icon button
 
+## Hand-drawn glossy icons by the owner's daughter (cut by tools/cut_icons.py).
+const ICON_TEX := {
+	"sound": preload("res://assets/ui/icon_sound.png"),
+	"music": preload("res://assets/ui/icon_music.png"),
+	"lang": preload("res://assets/ui/icon_globe.png"),
+}
+const SLASH_TEX := preload("res://assets/ui/icon_slash.png")
+const STAR_TEX := preload("res://assets/ui/icon_star.png")
+
+
 class IconButton extends Button:
 	var kind := "undo"
 	var off := false
 	var tint := Color.WHITE
+	var caption := ""
 
 	func _init(k: String, color: Color, d := 108.0) -> void:
 		kind = k
@@ -102,6 +113,9 @@ class IconButton extends Button:
 		var r := minf(size.x, size.y) * 0.24
 		var w := maxf(4.0, r * 0.22)
 		var col := Color(1, 1, 1, 0.45) if disabled else Color.WHITE
+		if UiKit.ICON_TEX.has(kind):
+			_draw_picture(c)
+			return
 		match kind:
 			"undo":
 				draw_arc(c + Vector2(r * 0.15, 0), r, -PI * 0.75, PI * 0.6, 24, col, w, true)
@@ -139,8 +153,24 @@ class IconButton extends Button:
 					draw_colored_polygon(PackedVector2Array([c + Vector2(-r * 0.15, -r * 0.8), c + Vector2(r * 0.85, -r * 1.0), c + Vector2(r * 0.85, -r * 0.6), c + Vector2(-r * 0.15, -r * 0.4)]), col)
 				if off:
 					draw_line(c + Vector2(-r * 1.1, -r * 1.1), c + Vector2(r * 1.1, r * 1.1), Color(1, 0.3, 0.3), w)
-			"lang":
-				pass
+
+	func _draw_picture(c: Vector2) -> void:
+		var d := minf(size.x, size.y)
+		var k := 0.56 if caption != "" else 0.66
+		var rect := Rect2(c - Vector2(d, d) * k * 0.5, Vector2(d, d) * k)
+		if caption != "":
+			rect.position.y -= d * 0.1
+		var mod := Color(0.55, 0.55, 0.6, 0.75) if off else Color.WHITE
+		draw_texture_rect(UiKit.ICON_TEX[kind], rect, false, mod)
+		if off:
+			draw_texture_rect(UiKit.SLASH_TEX, rect.grow(d * 0.04), false)
+		if caption != "":
+			var font := get_theme_default_font()
+			var fs := int(d * 0.26)
+			var tw := font.get_string_size(caption, HORIZONTAL_ALIGNMENT_LEFT, -1, fs).x
+			var pos := Vector2(c.x - tw * 0.5, c.y + d * 0.38)
+			draw_string_outline(font, pos, caption, HORIZONTAL_ALIGNMENT_LEFT, -1, fs, 6, Color(0, 0, 0, 0.85))
+			draw_string(font, pos, caption, HORIZONTAL_ALIGNMENT_LEFT, -1, fs, Color.WHITE)
 
 
 # ------------------------------------------------------------- star
@@ -155,23 +185,10 @@ class Star extends Control:
 		mouse_filter = Control.MOUSE_FILTER_IGNORE
 
 	func _draw() -> void:
-		var c := size * 0.5
-		var R := minf(size.x, size.y) * 0.5
-		var pts := PackedVector2Array()
-		for k in 10:
-			var ang := -PI / 2.0 + k * PI / 5.0
-			var rr := R if k % 2 == 0 else R * 0.45
-			pts.append(c + Vector2(cos(ang), sin(ang)) * rr)
-		var outline := pts.duplicate()
-		outline.append(pts[0])
-		if filled:
-			draw_colored_polygon(pts, col)
-			# little shine
-			draw_circle(c + Vector2(-R * 0.18, -R * 0.2), R * 0.13, Color(1, 1, 1, 0.7))
-			draw_polyline(outline, col.darkened(0.5), maxf(2.0, R * 0.08), true)
-		else:
-			draw_colored_polygon(pts, Color(0.15, 0.15, 0.2, 0.9))
-			draw_polyline(outline, Color(0.45, 0.45, 0.55), maxf(2.0, R * 0.06), true)
+		# the glossy star my daughter drew; an empty slot is the same star, dark
+		var mod := Color.WHITE if filled else Color(0.2, 0.18, 0.32, 0.92)
+		var d := minf(size.x, size.y)
+		draw_texture_rect(UiKit.STAR_TEX, Rect2((size - Vector2(d, d)) * 0.5, Vector2(d, d)), false, mod)
 
 
 static func star_row(n: int, d := 30.0) -> HBoxContainer:
