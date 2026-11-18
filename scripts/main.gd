@@ -32,6 +32,8 @@ func _ready() -> void:
 		get_viewport().msaa_3d = Viewport.MSAA_4X
 	if Game.has_arg("--autotest"):
 		_autotest()
+	elif Game.has_arg("--storeshots"):
+		_storeshots()
 	elif Game.has_arg("--swatch"):
 		_swatch()
 	elif Game.has_arg("--playtest"):
@@ -914,4 +916,75 @@ func _swatch() -> void:
 	_fit_for_state()
 	await _wait(0.6)
 	await _shot("swatch_" + Game.arg_value("--swatch", "x"))
+	get_tree().quit()
+
+
+## Google Play screenshots: python tools/play_store.py runs this at 1080x1920 for ru and en.
+func _storeshots() -> void:
+	var tag: String = Game.save.lang
+	var dir := "res://renders/play/raw/"
+	DirAccess.make_dir_recursive_absolute(ProjectSettings.globalize_path(dir))
+	var snap := func(name: String) -> void:
+		await RenderingServer.frame_post_draw
+		get_viewport().get_texture().get_image().save_png(ProjectSettings.globalize_path(dir + tag + "_" + name + ".png"))
+		_alog("store shot " + name)
+	var want := Vector2i(1080, 1920)
+	get_window().borderless = true
+	get_window().position = Vector2i(0, 0)
+	get_window().size = want
+	await _wait(0.3)
+	_alog("store window %s viewport %s" % [str(get_window().size), str(get_viewport().get_visible_rect().size)])
+	# fake progress so the level list and title look lived-in (never saved)
+	Game.save.unlocked = 14
+	Game.save.stars = {}
+	Game.save.best = {}
+	for i in 13:
+		Game.save.stars[str(i + 1)] = 3 if i % 4 != 2 else 2
+	await _wait(0.3)
+	show_title()
+	await _wait(2.4)
+	await snap.call("1_title")
+	# a big colourful board with a ring lifted
+	start_level(25)
+	await _wait(2.2)
+	board.tap(solution[0].x)
+	await _wait(0.6)
+	await snap.call("2_board")
+	# a pyramid being completed: play level 12 until the first peg completes
+	start_level(11)
+	await _wait(2.0)
+	var done := false
+	for m in solution:
+		board.do_move(m.x, m.y, true)
+		await _wait_idle()
+		if not board.completed.is_empty():
+			await _wait(0.22)
+			await snap.call("3_pyramid")
+			done = true
+			break
+		await _wait(0.1)
+	if not done:
+		await snap.call("3_pyramid")
+	# hint on a mid level
+	start_level(17)
+	await _wait(2.0)
+	hint()
+	await _wait(0.35)
+	await snap.call("4_hint")
+	# the hardest board
+	start_level(47)
+	await _wait(2.4)
+	await snap.call("5_big")
+	# a win with three stars
+	start_level(8)
+	await _wait(1.8)
+	for m in solution:
+		board.do_move(m.x, m.y, true)
+		await _wait_idle()
+		await _wait(0.05)
+	await _wait(3.4)
+	await snap.call("6_win")
+	show_levels()
+	await _wait(1.6)
+	await snap.call("7_levels")
 	get_tree().quit()

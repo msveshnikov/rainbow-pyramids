@@ -77,6 +77,8 @@ func _ready() -> void:
 	_load_save()
 	if save.lang == "":
 		save.lang = "ru" if OS.get_locale_language() == "ru" else "en"
+	if has_arg("--lang"):
+		save.lang = arg_value("--lang", save.lang)
 
 
 func palette_for(n: int) -> Array:
@@ -162,7 +164,7 @@ func _load_save() -> void:
 
 
 func write_save() -> void:
-	if has_arg("--autotest"):
+	if has_arg("--autotest") or has_arg("--storeshots") or has_arg("--playtest"):
 		return
 	var f := FileAccess.open(SAVE_PATH, FileAccess.WRITE)
 	if f:

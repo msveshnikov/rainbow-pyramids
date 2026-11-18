@@ -3,3 +3,5 @@ build/
 *.tmp
 renders/game/
 renders/*.log
+android/
+renders/play/raw/
