@@ -4,7 +4,7 @@
 
 **A glossy 3D ring-sorting puzzle made in Godot 4. Play in the browser, on Android or on Windows.**
 
-**[▶ Play online](https://severance.lol/7/)** · [Android APK](https://severance.lol/7/RainbowPyramids.apk)
+**[▶ Play online](https://severance.lol/7/)** · [Android APK](https://github.com/msveshnikov/rainbow-pyramids/releases/latest/download/RainbowPyramids.apk) · [Windows exe](https://github.com/msveshnikov/rainbow-pyramids/releases/latest/download/RainbowPyramids.exe)
 
 ![Rainbow Pyramids](concept/pyramid.png)
 

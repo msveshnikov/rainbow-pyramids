@@ -5,6 +5,8 @@
 | What | Where |
 |---|---|
 | Project (Godot 4.7, GL Compatibility) | `C:\My-progs\Godot\rings` |
+| GitHub (public) | https://github.com/msveshnikov/rainbow-pyramids (remote `origin`, branch `master`) |
+| Downloads | GitHub releases: `RainbowPyramids.exe`, `RainbowPyramids.apk` (`releases/latest/download/...`) |
 | Live web build | https://severance.lol/7/ |
 | Android APK (debug-signed) | https://severance.lol/7/RainbowPyramids.apk |
 | Server folder | `ubuntu@severance.lol:/var/www/severance/7/` (SSH key auth) |
@@ -41,5 +43,8 @@ tests undo and hints, replays every level's stored solution, and screenshots big
 scp -o BatchMode=yes build/web/* build/android/RainbowPyramids.apk ubuntu@severance.lol:/var/www/severance/7/
 curl -sI https://severance.lol/7/index.pck
 ```
+For a GitHub release: bump `version/code` + `version/name` in the Android preset, export, commit, push, then
+`gh release create vX.Y build/windows/RainbowPyramids.exe build/android/RainbowPyramids.apk --target master --title "Rainbow Pyramids X.Y" --notes-file notes.md`.
+
 Bump `version/code` in the Android preset for every APK the user installs over an older one.
 Keep MSAA off on web/mobile (Mali driver leak); `main.gd` turns 4x MSAA on only for desktop.
