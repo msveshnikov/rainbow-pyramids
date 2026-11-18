@@ -1,6 +1,6 @@
 # Credits
 
-All third-party assets are CC0 (public domain). Thank you!
+All third-party sound effects are CC0 (public domain). Thank you!
 
 | File(s) in assets/audio | Source | Author | License |
 |---|---|---|---|
@@ -8,7 +8,8 @@ All third-party assets are CC0 (public domain). Thank you!
 | powerup, star, sparkle | [50 CC0 retro / synth SFX](https://opengameart.org/content/50-cc0-retro-synth-sfx) | rubberduck | CC0 |
 | pop | [Bubbles pop](https://opengameart.org/content/bubbles-pop) | farfadet46 | CC0 |
 | win_* | [Win jingle](https://opengameart.org/content/win-jingle) | Fupi | CC0 |
-| music.mp3 | [Happy Adventure (loop)](https://opengameart.org/content/happy-adventure-loop) | TinyWorlds | CC0 |
+
+Music (`music.mp3`, "Rainbow Pyramids") was generated for this game with [Suno](https://suno.com/song/255e43b7-6bfd-433b-97fb-1aacf0fa1d14) on the owner's free plan (non-commercial use).
 
 Ring and pyramid concept art (`concept/`, `assets/ui/title.png`) was supplied by the project owner.
 Everything 3D is built procedurally in code at runtime.

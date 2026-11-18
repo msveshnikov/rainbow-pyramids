@@ -711,6 +711,11 @@ func _autotest() -> void:
 	var fails := 0
 	var only := Game.arg_value("--only", "")
 	await _wait(0.3)
+	if Sfx.music.stream == null or Sfx.music.stream.get_length() < 60.0:
+		_alog("FAIL music missing")
+		fails += 1
+	else:
+		_alog("music %.1f s, loop=%s" % [Sfx.music.stream.get_length(), str(Sfx.music.stream.loop)])
 	show_title()
 	await _wait(1.6)
 	await _shot("01_title")

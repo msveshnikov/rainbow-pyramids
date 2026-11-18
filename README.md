@@ -29,7 +29,7 @@ asks the in-game solver when you've gone your own way (or tells you to undo when
 **Juice:** rings fly in arcs with a tilt, squash when they land, and the rings below wobble.
 A finished pyramid plays a rising chime, with a fountain of sparks, a glowing halo and a gold tip.
 Winning a level throws confetti and makes every ring dance, then the stars pop in one by one.
-CC0 sound effects and music, a title screen with a breathing pyramid and orbiting rings you can poke.
+An original Suno soundtrack and CC0 sound effects, a title screen with a breathing pyramid and orbiting rings you can poke.
 
 | Action | Mouse / touch | Keyboard |
 |---|---|---|
@@ -55,4 +55,4 @@ godot --path . -- --autotest      # self-test, screenshots in renders/game/
   pegs, picking, every animation and particle effect.
 - `scripts/main.gd` — flow, camera framing for any screen shape, UI built in code, the autotest.
 - `tools/gen_levels.py` — makes `assets/levels/levels.json`: random deals, solver-checked, par = shortest solution.
-- Concept art in `concept/` was supplied by the project owner; sounds are CC0, see [assets/CREDITS.md](assets/CREDITS.md).
+- Concept art in `concept/` was supplied by the project owner; music made with Suno, sounds are CC0, see [assets/CREDITS.md](assets/CREDITS.md).
