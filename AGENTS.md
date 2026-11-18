@@ -7,7 +7,8 @@
 | Project (Godot 4.7, GL Compatibility) | `C:\My-progs\Godot\rings` |
 | GitHub (public) | https://github.com/msveshnikov/rainbow-pyramids (remote `origin`, branch `master`) |
 | Downloads | GitHub releases: `RainbowPyramids.exe`, `RainbowPyramids.apk` (`releases/latest/download/...`) |
-| Live web build | https://severance.lol/7/ |
+| Live web build | https://severance.lol/7/ = https://maxims.top/pyramids/ |
+| maxims.top portal card | source `C:\My-progs\Godot\snacks\maxims\index.html` + `img/pyramids.jpg`; server symlink `/var/www/maxims/pyramids -> /var/www/severance/7` |
 | Android APK (debug-signed) | https://severance.lol/7/RainbowPyramids.apk |
 | Server folder | `ubuntu@severance.lol:/var/www/severance/7/` (SSH key auth) |
 | Godot exe | `C:\Users\msves\OneDrive\Рабочий стол\Godot_v4.7.2-stable_win64.exe` |
