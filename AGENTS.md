@@ -7,7 +7,7 @@
 | Project (Godot 4.7, GL Compatibility) | `C:\My-progs\Godot\rings` |
 | GitHub (public) | https://github.com/msveshnikov/rainbow-pyramids (remote `origin`, branch `master`) |
 | Downloads | GitHub releases: `RainbowPyramids.exe`, `RainbowPyramids.apk` (`releases/latest/download/...`) |
-| Google Play | «Радужные пирамидки», package `com.maxsoft.rainbowpyramids`, Play Console app id 4976247712351862733 (dev 5957945224586801272); first release 7 (1.0.6) sent for review 2026-11-18; 1.0.7 (code 8, glossy logo v3) built, not yet uploaded |
+| Google Play | «Радужные пирамидки», package `com.maxsoft.rainbowpyramids`, Play Console app id 4976247712351862733 (dev 5957945224586801272); first release 7 (1.0.6) sent for review 2026-11-18; 1.0.7 (code 8, glossy logo v3, new ru/en store art) sent for review 2026-11-18 |
 | Play upload key | `~/.android/rainbowpyramids-upload.jks` (alias `rainbowpyramids`, password in `rainbowpyramids-upload.txt`); Godot reads it from `.godot/export_credentials.cfg` (preset.3). Never commit. |
 | Live web build | https://severance.lol/7/ = https://maxims.top/pyramids/ |
 | maxims.top portal card | source `C:\My-progs\Godot\snacks\maxims\index.html` + `img/pyramids.jpg`; server symlink `/var/www/maxims/pyramids -> /var/www/severance/7` |
@@ -61,4 +61,5 @@ Keep MSAA off on web/mobile (Mali driver leak); `main.gd` turns 4x MSAA on only 
    → Next → Save → Publishing overview → Send for review.
 4. The built-in browser can't pick files: serve the repo with a local CORS server (127.0.0.1) and set the
    file input's `files` from a fetched blob (see the project memory for the snippet).
-Declarations used: no ads, no data collected, no login, 13+, IARC all "No" (Everyone), assets not AI-made.
+Declarations used: no ads, no data collected, no login, 13+, IARC all "No" (Everyone), assets not AI-made (the logo, incl. the glossy v3, was drawn by the owner's daughter).
+Store screenshots: upload all at once in the asset panel, then drag them into order 1-7 (real drags work).
