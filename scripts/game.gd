@@ -67,6 +67,7 @@ const STR := {
 	"pyramid": ["Пирамидка!", "Pyramid!"],
 	"best": ["рекорд %d", "best %d"],
 	"new_best": ["Новый рекорд!", "New best!"],
+	"privacy": ["Политика конфиденциальности", "Privacy policy"],
 	"credits": ["Музыка: Suno · Звуки: Kenney, rubberduck, Fupi, farfadet46 (CC0)", "Music: Suno · Sounds: Kenney, rubberduck, Fupi, farfadet46 (CC0)"],
 }
 
