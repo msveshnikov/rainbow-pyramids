@@ -7,7 +7,7 @@
 | Project (Godot 4.7, GL Compatibility) | `C:\My-progs\Godot\rings` |
 | GitHub (public) | https://github.com/msveshnikov/rainbow-pyramids (remote `origin`, branch `master`) |
 | Downloads | GitHub releases: `RainbowPyramids.exe`, `RainbowPyramids.apk` (`releases/latest/download/...`) |
-| Google Play | «Радужные пирамидки», package `com.maxsoft.rainbowpyramids`, Play Console app id 4976247712351862733 (dev 5957945224586801272); first release 7 (1.0.6) sent for review 2026-11-18 |
+| Google Play | «Радужные пирамидки», package `com.maxsoft.rainbowpyramids`, Play Console app id 4976247712351862733 (dev 5957945224586801272); first release 7 (1.0.6) sent for review 2026-11-18; 1.0.7 (code 8, glossy logo v3) built, not yet uploaded |
 | Play upload key | `~/.android/rainbowpyramids-upload.jks` (alias `rainbowpyramids`, password in `rainbowpyramids-upload.txt`); Godot reads it from `.godot/export_credentials.cfg` (preset.3). Never commit. |
 | Live web build | https://severance.lol/7/ = https://maxims.top/pyramids/ |
 | maxims.top portal card | source `C:\My-progs\Godot\snacks\maxims\index.html` + `img/pyramids.jpg`; server symlink `/var/www/maxims/pyramids -> /var/www/severance/7` |
@@ -48,7 +48,7 @@ scp -o BatchMode=yes build/web/* build/android/RainbowPyramids.apk ubuntu@severa
 curl -sI https://severance.lol/7/index.pck
 ```
 For a GitHub release: bump `version/code` + `version/name` in the Android preset, export, commit, push, then
-`gh release create vX.Y build/windows/RainbowPyramids.exe build/android/RainbowPyramids.apk --target master --title "Rainbow Pyramids X.Y" --notes-file notes.md`.
+`"/c/Program Files/GitHub CLI/gh.exe" release create vX.Y build/windows/RainbowPyramids.exe build/android/RainbowPyramids.apk --target master --title "Rainbow Pyramids X.Y" --notes-file notes.md`.
 
 Bump `version/code` in the Android preset for every APK the user installs over an older one.
 Keep MSAA off on web/mobile (Mali driver leak); `main.gd` turns 4x MSAA on only for desktop.
