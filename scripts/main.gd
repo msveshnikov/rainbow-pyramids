@@ -153,7 +153,7 @@ func _fit_for_state() -> void:
 		fit_camera(board.showcase_points(), -14, 0.27 if portrait else 0.24, 0.36 if portrait else 0.44, 0.06 if portrait else 0.3)
 	elif state == "play" or state == "win":
 		var pitch := -42.0 if portrait else -40.0
-		fit_camera(_board_points(), pitch, 0.15 if portrait else 0.16, 0.16 if portrait else 0.17, 0.035 if portrait else 0.1)
+		fit_camera(_board_points(), pitch, 0.15 if portrait else 0.16, 0.16 if portrait else 0.28, 0.035 if portrait else 0.1)
 
 
 func _on_resize() -> void:
@@ -176,7 +176,43 @@ func _new_screen() -> Control:
 
 
 func _place(c: Control, preset: Control.LayoutPreset, margin := 24) -> void:
-	c.set_anchors_and_offsets_preset(preset, Control.PRESET_MODE_MINSIZE, margin)
+	# Size it to its real minimum first (a Button's own minimum ignores custom_minimum_size,
+	# which made right-anchored buttons grow off the screen), then keep it clear of notches.
+	c.size = c.get_combined_minimum_size()
+	c.set_anchors_and_offsets_preset(preset, Control.PRESET_MODE_KEEP_SIZE, margin)
+	var ins := _insets()
+	var dx := 0.0
+	var dy := 0.0
+	if c.anchor_top == 0.0 and c.anchor_bottom == 0.0:
+		dy = ins.position.y
+	elif c.anchor_top == 1.0 and c.anchor_bottom == 1.0:
+		dy = -ins.size.y
+	if c.anchor_left == 0.0 and c.anchor_right == 0.0:
+		dx = ins.position.x
+	elif c.anchor_left == 1.0 and c.anchor_right == 1.0:
+		dx = -ins.size.x
+	c.offset_left += dx
+	c.offset_right += dx
+	c.offset_top += dy
+	c.offset_bottom += dy
+
+
+## Safe-area insets (notch, camera hole, rounded corners) in UI units:
+## position = left/top, size = right/bottom. Zero on desktop and web.
+func _insets() -> Rect2:
+	if not OS.has_feature("mobile"):
+		return Rect2()
+	var win := Vector2(DisplayServer.window_get_size())
+	var vis := get_viewport().get_visible_rect().size
+	if win.x <= 0.0 or win.y <= 0.0:
+		return Rect2()
+	var safe := Rect2(DisplayServer.get_display_safe_area())
+	var k := vis.x / win.x
+	var l := maxf(0.0, safe.position.x) * k
+	var t := maxf(0.0, safe.position.y) * k
+	var r := maxf(0.0, win.x - safe.end.x) * k
+	var b := maxf(0.0, win.y - safe.end.y) * k
+	return Rect2(l, t, r, b)
 
 
 func show_title() -> void:
@@ -264,8 +300,8 @@ func show_title() -> void:
 	UiKit.pop_in(row, 0.74)
 
 
-func _sound_button(c: Color) -> Button:
-	var b := UiKit.IconButton.new("sound", c, 96)
+func _sound_button(c: Color, d := 96.0) -> Button:
+	var b := UiKit.IconButton.new("sound", c, d)
 	b.off = not Game.save.sound
 	b.pressed.connect(func():
 		Game.save.sound = not Game.save.sound
@@ -302,10 +338,11 @@ func show_levels() -> void:
 	s.add_child(dim)
 	var vb := VBoxContainer.new()
 	vb.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-	vb.offset_top = 30
-	vb.offset_bottom = -30
-	vb.offset_left = 20
-	vb.offset_right = -20
+	var ins := _insets()
+	vb.offset_top = 30 + ins.position.y
+	vb.offset_bottom = -30 - ins.size.y
+	vb.offset_left = 20 + ins.position.x
+	vb.offset_right = -20 - ins.size.x
 	vb.add_theme_constant_override("separation", 16)
 	s.add_child(vb)
 	var head := HBoxContainer.new()
@@ -413,7 +450,7 @@ func _build_hud() -> void:
 	bottom.add_child(btn_undo)
 	bottom.add_child(restart)
 	bottom.add_child(btn_hint)
-	bottom.add_child(_sound_button(Color("ff35d2")))
+	bottom.add_child(_sound_button(Color("ff35d2"), 118))
 	s.add_child(bottom)
 	_place(bottom, Control.PRESET_CENTER_BOTTOM, 40)
 	toast = UiKit.label("", 30, Color.WHITE, 10)

@@ -7,7 +7,7 @@
 | Project (Godot 4.7, GL Compatibility) | `C:\My-progs\Godot\rings` |
 | GitHub (public) | https://github.com/msveshnikov/rainbow-pyramids (remote `origin`, branch `master`) |
 | Downloads | GitHub releases: `RainbowPyramids.exe`, `RainbowPyramids.apk` (`releases/latest/download/...`) |
-| Google Play | «Радужные пирамидки», package `com.maxsoft.rainbowpyramids`, Play Console app id 4976247712351862733 (dev 5957945224586801272); first release 7 (1.0.6) sent for review 2026-11-18; 1.0.7 (code 8, glossy logo v3, new ru/en store art) sent for review 2026-11-18; 1.0.8 (code 9, daughter's glossy UI icons) built, not uploaded to Play |
+| Google Play | «Радужные пирамидки», package `com.maxsoft.rainbowpyramids`, Play Console app id 4976247712351862733 (dev 5957945224586801272); first release 7 (1.0.6) sent for review 2026-11-18; 1.0.7 (code 8, glossy logo v3, new ru/en store art) sent for review 2026-11-18; 1.0.8 (code 9, glossy UI icons) web/GitHub only; 1.0.9 (code 10, HUD layout fix + safe-area insets) going to Play 2026-11-19 |
 | Play upload key | `~/.android/rainbowpyramids-upload.jks` (alias `rainbowpyramids`, password in `rainbowpyramids-upload.txt`); Godot reads it from `.godot/export_credentials.cfg` (preset.3). Never commit. |
 | Live web build | https://severance.lol/7/ = https://maxims.top/pyramids/ |
 | maxims.top portal card | source `C:\My-progs\Godot\snacks\maxims\index.html` + `img/pyramids.jpg`; server symlink `/var/www/maxims/pyramids -> /var/www/severance/7` |
