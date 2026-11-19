@@ -7,7 +7,7 @@
 | Project (Godot 4.7, GL Compatibility) | `C:\My-progs\Godot\rings` |
 | GitHub (public) | https://github.com/msveshnikov/rainbow-pyramids (remote `origin`, branch `master`) |
 | Downloads | GitHub releases: `RainbowPyramids.exe`, `RainbowPyramids.apk` (`releases/latest/download/...`) |
-| Google Play | «Радужные пирамидки», package `com.maxsoft.rainbowpyramids`, Play Console app id 4976247712351862733 (dev 5957945224586801272); first release 7 (1.0.6) sent for review 2026-11-18; 1.0.7 (code 8, glossy logo v3, new ru/en store art) sent for review 2026-11-18; 1.0.8 (code 9, glossy UI icons) web/GitHub only; 1.0.9 (code 10, HUD layout fix + safe-area insets) going to Play 2026-11-19 |
+| Google Play | «Радужные пирамидки», package `com.maxsoft.rainbowpyramids`, Play Console app id 4976247712351862733 (dev 5957945224586801272); first release 7 (1.0.6) sent for review 2026-11-18; 1.0.7 (code 8, glossy logo v3, new ru/en store art) sent for review 2026-11-18; 1.0.8 (code 9, glossy UI icons) web/GitHub only; 1.0.7 went live; 1.0.9 (code 10, icons + HUD layout fix + safe-area insets, new ru/en screenshots) sent for review 2026-11-19 |
 | Play upload key | `~/.android/rainbowpyramids-upload.jks` (alias `rainbowpyramids`, password in `rainbowpyramids-upload.txt`); Godot reads it from `.godot/export_credentials.cfg` (preset.3). Never commit. |
 | Live web build | https://severance.lol/7/ = https://maxims.top/pyramids/ |
 | maxims.top portal card | source `C:\My-progs\Godot\snacks\maxims\index.html` + `img/pyramids.jpg`; server symlink `/var/www/maxims/pyramids -> /var/www/severance/7` |
@@ -62,4 +62,5 @@ Keep MSAA off on web/mobile (Mali driver leak); `main.gd` turns 4x MSAA on only 
 4. The built-in browser can't pick files: serve the repo with a local CORS server (127.0.0.1) and set the
    file input's `files` from a fetched blob (see the project memory for the snippet).
 Declarations used: no ads, no data collected, no login, 13+, IARC all "No" (Everyone), assets not AI-made (the logo, incl. the glossy v3, was drawn by the owner's daughter).
-Store screenshots: upload all at once in the asset panel, then drag them into order 1-7 (real drags work).
+Store screenshots: upload all at once in the asset panel, then drag them into order 1-7 (real drags work; keep drop points below the sticky header and above the bottom bar, scroll the slot container between moves).
+Layout: `_place()` in main.gd sizes a control to its combined minimum before anchoring (a Button's own minimum ignores custom_minimum_size) and adds Android safe-area insets; IconButtons shrink-center so rows never stretch them. Check new UI at 462x1000, 540x960, 768x1024 and 1280x720.
