@@ -3,6 +3,25 @@ extends RefCounted
 ## UI built in code: buttons, icon buttons, stars, labels. No .tscn needed.
 
 
+## Glossy bubble letters my daughter drew, Latin + Cyrillic (cut by tools/cut_font.py,
+## packed by tools/build_font.gd). Silver, so font_color tints them to any colour.
+const GLOSSY_FONT := preload("res://assets/fonts/glossy.res")
+
+
+static func install_font(win: Window) -> void:
+	var f: FontFile = GLOSSY_FONT
+	var th := ThemeDB.get_default_theme()
+	if th.default_font == f:
+		return
+	if f.fallbacks.is_empty():
+		f.fallbacks = [th.default_font if th.default_font else ThemeDB.fallback_font]   # anything she didn't draw (№, «», ✓ ...)
+	# the UI lives under a CanvasLayer, which cuts theme inheritance from the window, so set it globally
+	th.default_font = f
+	ThemeDB.fallback_font = f
+	# the atlas is ~3x bigger than most text: sample its mipmaps so small text stays smooth
+	win.canvas_item_default_texture_filter = Viewport.DEFAULT_CANVAS_ITEM_TEXTURE_FILTER_LINEAR_WITH_MIPMAPS
+
+
 static func label(text: String, size := 40, color := Color.WHITE, outline := 10) -> Label:
 	var l := Label.new()
 	l.text = text

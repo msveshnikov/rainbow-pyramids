@@ -25,6 +25,7 @@ var _log: PackedStringArray = PackedStringArray()
 
 func _ready() -> void:
 	_setup_world()
+	UiKit.install_font(get_tree().root)
 	ui = CanvasLayer.new()
 	add_child(ui)
 	get_viewport().size_changed.connect(_on_resize)
