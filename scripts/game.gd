@@ -68,6 +68,7 @@ const STR := {
 	"best": ["рекорд %d", "best %d"],
 	"new_best": ["Новый рекорд!", "New best!"],
 	"privacy": ["Политика конфиденциальности", "Privacy policy"],
+	"art": ["Логотип, значки и буквы нарисовала Вероника Свешникова", "Logo, icons and lettering by Veronika Sveshnikova"],
 	"credits": ["Музыка: Suno · Звуки: Kenney, rubberduck, Fupi, farfadet46 (CC0)", "Music: Suno · Sounds: Kenney, rubberduck, Fupi, farfadet46 (CC0)"],
 }
 

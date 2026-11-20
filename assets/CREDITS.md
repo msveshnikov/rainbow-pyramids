@@ -11,9 +11,9 @@ All third-party sound effects are CC0 (public domain). Thank you!
 
 Music (`music.mp3`, "Rainbow Pyramids") was generated for this game with [Suno](https://suno.com/song/255e43b7-6bfd-433b-97fb-1aacf0fa1d14) on the owner's free plan (non-commercial use).
 
-The "Rainbow pyramids" logo (`assets/ui/logo.png`, original in `concept/logo_v3.png`; earlier versions `concept/logo_by_daughter_v2.jpg`, `concept/logo_by_daughter.jpg`) and the glossy UI icons (star, sound, music, globe, "off" slash: `assets/ui/icon_*.png`, originals in `concept/icons/`, cut by `tools/cut_icons.py`) were drawn by the owner's daughter.
+The "Rainbow pyramids" logo (`assets/ui/logo.png`, original in `concept/logo_v3.png`; earlier versions `concept/logo_by_daughter_v2.jpg`, `concept/logo_by_daughter.jpg`) and the glossy UI icons (star, sound, music, globe, "off" slash: `assets/ui/icon_*.png`, originals in `concept/icons/`, cut by `tools/cut_icons.py`) were drawn by **Veronika Sveshnikova** (Вероника Свешникова).
 
-The glossy bubble-letter font (`assets/fonts/glossy.res`, Latin + Cyrillic) is also hers: her letter sheets are in `concept/fonts/` (silver Latin and Cyrillic, plus pink, cyan, blue and green Latin), cut by `tools/cut_font.py` and packed by `tools/build_font.gd`.
+The glossy bubble-letter font (`assets/fonts/glossy.res`, Latin + Cyrillic) is also by Veronika Sveshnikova: her letter sheets are in `concept/fonts/` (silver Latin and Cyrillic, plus pink, cyan, blue and green Latin), cut by `tools/cut_font.py` and packed by `tools/build_font.gd`.
 
 Ring and pyramid concept art (`concept/`, `assets/ui/title.png`) was supplied by the project owner.
 Everything 3D is built procedurally in code at runtime.

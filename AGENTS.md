@@ -7,7 +7,7 @@
 | Project (Godot 4.7, GL Compatibility) | `C:\My-progs\Godot\rings` |
 | GitHub (public) | https://github.com/msveshnikov/rainbow-pyramids (remote `origin`, branch `master`) |
 | Downloads | GitHub releases: `RainbowPyramids.exe`, `RainbowPyramids.apk` (`releases/latest/download/...`) |
-| Google Play | «Радужные пирамидки», package `com.maxsoft.rainbowpyramids`, Play Console app id 4976247712351862733 (dev 5957945224586801272); first release 7 (1.0.6) sent for review 2026-11-18; 1.0.7 (code 8, glossy logo v3, new ru/en store art) sent for review 2026-11-18; 1.0.8 (code 9, glossy UI icons) web/GitHub only; 1.0.7 went live; 1.0.9 (code 10, icons + HUD layout fix + safe-area insets, new ru/en screenshots) sent for review 2026-11-19 and went live; 1.1.0 (code 11, daughter's glossy font, new ru/en screenshots) sent for review 2026-11-20 |
+| Google Play | «Радужные пирамидки», package `com.maxsoft.rainbowpyramids`, Play Console app id 4976247712351862733 (dev 5957945224586801272); first release 7 (1.0.6) sent for review 2026-11-18; 1.0.7 (code 8, glossy logo v3, new ru/en store art) sent for review 2026-11-18; 1.0.8 (code 9, glossy UI icons) web/GitHub only; 1.0.7 went live; 1.0.9 (code 10, icons + HUD layout fix + safe-area insets, new ru/en screenshots) sent for review 2026-11-19 and went live; 1.1.0 (code 11, Veronika Sveshnikova's glossy font, new ru/en screenshots) sent for review 2026-11-20 |
 | Play upload key | `~/.android/rainbowpyramids-upload.jks` (alias `rainbowpyramids`, password in `rainbowpyramids-upload.txt`); Godot reads it from `.godot/export_credentials.cfg` (preset.3). Never commit. |
 | Live web build | https://severance.lol/7/ = https://maxims.top/pyramids/ |
 | maxims.top portal card | source `C:\My-progs\Godot\snacks\maxims\index.html` + `img/pyramids.jpg`; server symlink `/var/www/maxims/pyramids -> /var/www/severance/7` |
@@ -17,7 +17,7 @@
 | Levels | `assets/levels/levels.json`, made by `python tools/gen_levels.py` |
 | Sounds | `assets/audio/*` (CC0, sources in `assets/CREDITS.md`) |
 | Concept art from the owner | `concept/` (ignored by Godot via `.gdignore`) |
-| Font (daughter's glossy letters) | sheets `concept/fonts/*.png` → `python tools/cut_font.py` (atlas + metrics into `concept/fonts/build/`, git-ignored) → `"$G" --headless --path . --script tools/build_font.gd` → `assets/fonts/glossy.res`; installed globally by `UiKit.install_font()` |
+| Font (Veronika Sveshnikova's glossy letters) | sheets `concept/fonts/*.png` → `python tools/cut_font.py` (atlas + metrics into `concept/fonts/build/`, git-ignored) → `"$G" --headless --path . --script tools/build_font.gd` → `assets/fonts/glossy.res`; installed globally by `UiKit.install_font()` |
 | Save file | `user://save.json` (Windows: `%APPDATA%\Godot\app_userdata\Rainbow Pyramids\`) |
 | Autotest output | `renders/game/*.png`, `renders/autotest.log` |
 | Builds | `build/windows/RainbowPyramids.exe`, `build/web/`, `build/android/RainbowPyramids.apk` |
@@ -62,7 +62,7 @@ Keep MSAA off on web/mobile (Mali driver leak); `main.gd` turns 4x MSAA on only 
    → Next → Save → Publishing overview → Send for review.
 4. The built-in browser can't pick files: serve the repo with a local CORS server (127.0.0.1) and set the
    file input's `files` from a fetched blob (see the project memory for the snippet).
-Declarations used: no ads, no data collected, no login, 13+, IARC all "No" (Everyone), assets not AI-made (the logo, incl. the glossy v3, was drawn by the owner's daughter).
+Declarations used: no ads, no data collected, no login, 13+, IARC all "No" (Everyone), assets not AI-made (the logo, incl. the glossy v3, was drawn by Veronika Sveshnikova, the owner's daughter; credit her by full name everywhere, never as "my daughter").
 Store screenshots: upload all at once in the asset panel, then drag them into order 1-7 (real drags work; keep drop points below the sticky header and above the bottom bar, scroll the slot container between moves).
 Layout: `_place()` in main.gd sizes a control to its combined minimum before anchoring (a Button's own minimum ignores custom_minimum_size) and adds Android safe-area insets; IconButtons shrink-center so rows never stretch them. Check new UI at 462x1000, 540x960, 768x1024 and 1280x720.
 Font: one silver bitmap font for all UI text (Latin from `silver.png`, Cyrillic from `silver_ru.png`); `font_color` tints it, so pick label colours light enough. The UI sits under a CanvasLayer, so a Window theme does not reach it: the font goes into `ThemeDB.get_default_theme()`. Glyphs she didn't draw fall back to the stock font. The pink/cyan/blue/green sheets are Latin only and unused.

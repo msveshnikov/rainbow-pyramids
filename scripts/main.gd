@@ -222,7 +222,7 @@ func show_title() -> void:
 	board.build_showcase()
 	_fit_for_state()
 	var s := _new_screen()
-	# the logo my daughter painted ("Rainbow pyramids"), floating gently; tap it for a jiggle
+	# the logo Veronika Sveshnikova painted ("Rainbow pyramids"), floating gently; tap it for a jiggle
 	var vs := get_viewport().get_visible_rect().size
 	var tex: Texture2D = load("res://assets/ui/logo.png")
 	var aspect := float(tex.get_width()) / tex.get_height()
@@ -293,6 +293,7 @@ func show_title() -> void:
 	pv.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
 	pv.pressed.connect(func(): OS.shell_open("https://maxims.top/pyramids/privacy.html"))
 	foot.add_child(pv)
+	foot.add_child(UiKit.label(Game.t("art"), 20, Color(1, 0.85, 0.45, 0.85), 4))
 	foot.add_child(UiKit.label(Game.t("credits"), 18, Color(1, 1, 1, 0.45), 4))
 	s.add_child(foot)
 	_place(foot, Control.PRESET_CENTER_BOTTOM, 10)

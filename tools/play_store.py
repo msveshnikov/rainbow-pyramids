@@ -64,7 +64,7 @@ def feature(lang):
     ImageDraw.Draw(mask).ellipse((-60, -40, art.size[0] + 60, art.size[1] + 40), fill=255)
     mask = mask.filter(ImageFilter.GaussianBlur(30))
     bg.paste(art, (20, 24), mask)
-    # the logo painted by the owner's daughter
+    # the logo painted by Veronika Sveshnikova
     logo = Image.open(os.path.join(ROOT, "assets", "ui", "logo.png")).convert("RGBA")
     lw = 540
     logo = logo.resize((lw, round(logo.height * lw / logo.width)), Image.LANCZOS)

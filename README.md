@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="assets/ui/logo.png" alt="Rainbow pyramids — logo painted by my daughter" width="520">
+<img src="assets/ui/logo.png" alt="Rainbow pyramids — logo painted by Veronika Sveshnikova" width="520">
 
 # Rainbow Pyramids · Радужные пирамидки
 
@@ -57,4 +57,4 @@ godot --path . -- --autotest      # self-test, screenshots in renders/game/
   pegs, picking, every animation and particle effect.
 - `scripts/main.gd` — flow, camera framing for any screen shape, UI built in code, the autotest.
 - `tools/gen_levels.py` — makes `assets/levels/levels.json`: random deals, solver-checked, par = shortest solution.
-- The logo and the star, sound, music and language icons were drawn by my daughter; concept art in `concept/` was supplied by the project owner; music made with Suno, sounds are CC0, see [assets/CREDITS.md](assets/CREDITS.md).
+- The logo, the star, sound, music and language icons and the glossy bubble-letter font were drawn by **Veronika Sveshnikova** (Вероника Свешникова); concept art in `concept/` was supplied by the project owner; music made with Suno, sounds are CC0, see [assets/CREDITS.md](assets/CREDITS.md).

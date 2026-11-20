@@ -3,7 +3,7 @@ extends RefCounted
 ## UI built in code: buttons, icon buttons, stars, labels. No .tscn needed.
 
 
-## Glossy bubble letters my daughter drew, Latin + Cyrillic (cut by tools/cut_font.py,
+## Glossy bubble letters drawn by Veronika Sveshnikova, Latin + Cyrillic (cut by tools/cut_font.py,
 ## packed by tools/build_font.gd). Silver, so font_color tints them to any colour.
 const GLOSSY_FONT := preload("res://assets/fonts/glossy.res")
 
@@ -104,7 +104,7 @@ static func rainbow(i: int) -> Color:
 
 # ------------------------------------------------------------- icon button
 
-## Hand-drawn glossy icons by the owner's daughter (cut by tools/cut_icons.py).
+## Hand-drawn glossy icons by Veronika Sveshnikova (cut by tools/cut_icons.py).
 const ICON_TEX := {
 	"sound": preload("res://assets/ui/icon_sound.png"),
 	"music": preload("res://assets/ui/icon_music.png"),
@@ -207,7 +207,7 @@ class Star extends Control:
 		mouse_filter = Control.MOUSE_FILTER_IGNORE
 
 	func _draw() -> void:
-		# the glossy star my daughter drew; an empty slot is the same star, dark
+		# the glossy star Veronika Sveshnikova drew; an empty slot is the same star, dark
 		var mod := Color.WHITE if filled else Color(0.2, 0.18, 0.32, 0.92)
 		var d := minf(size.x, size.y)
 		draw_texture_rect(UiKit.STAR_TEX, Rect2((size - Vector2(d, d)) * 0.5, Vector2(d, d)), false, mod)

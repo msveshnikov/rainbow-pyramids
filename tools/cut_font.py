@@ -1,4 +1,4 @@
-"""Cut my daughter's glossy letter sheets into a bitmap-font atlas.
+"""Cut Veronika Sveshnikova's glossy letter sheets into a bitmap-font atlas.
 
 Input  : concept/fonts/silver.png (Latin, digits, signs) and concept/fonts/silver_ru.png (Cyrillic),
          each a 10x10 grid of glossy letters on a transparent background.
